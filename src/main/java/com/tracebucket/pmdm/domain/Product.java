@@ -2,40 +2,38 @@ package com.tracebucket.pmdm.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * @author FFL
+ * Created with IntelliJ IDEA.
+ * User: ffl
+ * Date: 1/5/12
+ * Time: 3:46 PM
+ * To change this template use File | Settings | File Templates.
  */
 @Entity
 @Table(name = "PRODUCT")
 public class Product implements Serializable {
+
+    @Column(name = "ID", nullable = false)
+    @Basic(fetch = FetchType.EAGER)
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "NAME", length = 100, nullable = false)
+    @Basic
     private String name;
+
+    @Column(name = "CODE", length = 25, nullable = false)
+    @Basic
+    private String code;
+
+    @Column(name = "DESCRIPTION")
+    @Basic(fetch = FetchType.EAGER)
     private String description;
-    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER)
-    private Map<MetaAttribute, ProductAttribute> attributes = new HashMap<MetaAttribute, ProductAttribute>(0);
 
-    public void addAttribute(MetaAttribute metaAttribute, ProductAttribute productAttribute){
-                attributes.put(metaAttribute,productAttribute);
-    }
-
-    public Set<MetaAttribute> getMetaAttributes()
-    {
-        return attributes.keySet();
-    }
-
-    public ProductAttribute getProductAttribute(MetaAttribute metaAttribute){
-        return attributes.get(metaAttribute);
-    }
-
-    public boolean hasMetaAttribute(MetaAttribute metaAttribute){
-        if(attributes.keySet().contains(metaAttribute))
-            return true;
-        else
-            return false;
-    }
+    @OneToMany(mappedBy = "product")
+    @MapKeyJoinColumn(name = "META_ATTRIBUTE__ID")
+    private Map<MetaAttribute, BaseDictionary> baseAttributes;
 }

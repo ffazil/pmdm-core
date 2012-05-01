@@ -2,19 +2,16 @@ package com.tracebucket.pmdm.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
  * User: ffl
  * Date: 1/5/12
- * Time: 3:57 PM
+ * Time: 4:00 PM
  * To change this template use File | Settings | File Templates.
  */
-
-@Entity
-@Table(name = "MERCHANT")
-public class Merchant implements Serializable {
+public class Warehouse implements Serializable {
 
     @Column(name = "ID", nullable = false)
     @Basic(fetch = FetchType.EAGER)
@@ -26,13 +23,11 @@ public class Merchant implements Serializable {
     @Basic
     private String name;
 
-    @Column(name = "IMAGE")
-    @Basic(fetch = FetchType.EAGER)
-    private String image;
+    @Column(name = "CODE", length = 25, nullable = false)
+    @Basic
+    private String code;
 
-    @OneToMany(mappedBy = "merchant", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    private Set<ProductFolio> productFolios;
-
-    @ManyToMany
-    private Set<Warehouse> warehouses;
+    @OneToMany(mappedBy = "warehouse")
+    @MapKeyJoinColumn(name = "PRODUCT__ID")
+    private Map<Product, Stock> productStock;
 }

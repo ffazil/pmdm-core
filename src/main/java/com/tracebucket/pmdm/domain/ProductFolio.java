@@ -8,13 +8,13 @@ import java.util.Set;
  * Created with IntelliJ IDEA.
  * User: ffl
  * Date: 1/5/12
- * Time: 3:57 PM
+ * Time: 4:07 PM
  * To change this template use File | Settings | File Templates.
  */
 
 @Entity
-@Table(name = "MERCHANT")
-public class Merchant implements Serializable {
+@Table(name = "PRODUCT_FOLIO")
+public class ProductFolio implements Serializable {
 
     @Column(name = "ID", nullable = false)
     @Basic(fetch = FetchType.EAGER)
@@ -26,13 +26,13 @@ public class Merchant implements Serializable {
     @Basic
     private String name;
 
-    @Column(name = "IMAGE")
-    @Basic(fetch = FetchType.EAGER)
-    private String image;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumns({ @JoinColumn(name = "MERCHANT__ID", referencedColumnName = "ID", nullable = false) })
+    private Merchant merchant;
 
-    @OneToMany(mappedBy = "merchant", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    private Set<ProductFolio> productFolios;
+    @OneToMany(mappedBy = "productFolio", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    private Set<Article> articles;
 
     @ManyToMany
-    private Set<Warehouse> warehouses;
+    private Set<MetaAttribute> metaAttributes;
 }
